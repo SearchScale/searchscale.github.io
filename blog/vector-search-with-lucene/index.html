@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Vector Search with Lucene</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Vector Search with Lucene">
+  
+  <meta name="author" content="SearchScale">
+  <meta name="generator" content="Hugo 0.59.1" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://searchscale.com/plugins/bootstrap/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="https://searchscale.com/plugins/slick/slick.css">
+  
+  <link rel="stylesheet" href="https://searchscale.com/plugins/fontawesome/font-awesome.min.css">
+  
+  <link rel="stylesheet" href="https://searchscale.com/plugins/animate/animate.css">
+  
+  <link rel="stylesheet" href="https://searchscale.com/plugins/venobox/venobox.css">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://searchscale.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://searchscale.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://searchscale.com/images/favicon.png " type="image/x-icon">
+
+  
+  <link rel="stylesheet" href="https://searchscale.com/css/searchscale.css">
+
+
+<script type="text/javascript">var MouseStats_Commands=MouseStats_Commands?MouseStats_Commands:[]; (function(){function b(){if(void 0==document.getElementById("__mstrkscpt")){var a=document.createElement("script");a.type="text/javascript";a.id="__mstrkscpt";a.src=("https:"==document.location.protocol?"https://ssl":"http://www2")+".mousestats.com/js/5/0/5018552935434147674.js?"+Math.floor((new Date).getTime()/6E5);a.async=!0;a.defer=!0;(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}}window.attachEvent?window.attachEvent("onload",b):window.addEventListener("load", b,!1);"complete"===document.readyState&&b()})(); </script>
+
+
+
+<script>
+  window['_fs_debug'] = false;
+  window['_fs_host'] = 'fullstory.com';
+  window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
+  window['_fs_org'] = 'W3BX4';
+  window['_fs_namespace'] = 'FS';
+  (function(m,n,e,t,l,o,g,y){
+      if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+      g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
+      o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
+      y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+      g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
+      g.anonymize=function(){g.identify(!!0)};
+      g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
+      g.log = function(a,b){g("log",[a,b])};
+      g.consent=function(a){g("consent",!arguments.length||a)};
+      g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+      g.clearUserCookie=function(){};
+      g._w={};y='XMLHttpRequest';g._w[y]=m[y];y='fetch';g._w[y]=m[y];
+      if(m[y])m[y]=function(){return g._w[y].apply(this,arguments)};
+      g._v="1.2.0";
+  })(window,document,window['_fs_namespace'],'script','user');
+  </script>
+
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- header -->
+<header>
+  
+  <!-- top header -->
+  <!-- /top header -->
+  
+
+  <!-- navigation -->
+  <div class="navigation bg-white position-relative">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="/"><img class="img-fluid pb-lg-3" src="https://searchscale.com/images/logo.png" alt="SearchScale"></a>
+        <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation"
+          aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse text-center" id="navigation">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            
+            
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            
+            
+            
+            <li class="nav-item">
+              <a class="nav-link" href="/blog">Blog</a>
+            </li>
+            
+            
+          </ul>
+
+          
+          
+
+          
+          
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- /navigation -->
+</header>
+<!-- /header -->
+
+<!-- page title -->
+<section class="section bg-cover overlay" style="background-image: url('https://searchscale.com/'),url('https://searchscale.com/images/slider/vector_search_with_lucene_slider_image.jpg'),url('https://searchscale.com/images/backgrounds/page-title.jpg');">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-white mb-3">Vector Search with Lucene</h2>
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item font-weight-semebold"><a class="text-white" href="/">Home</a></li>
+            <li class="breadcrumb-item font-weight-semebold active text-primary" aria-current="page">Vector Search with Lucene</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /page title -->
+
+<!-- blog details -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- post thumb -->
+        <div class="position-relative mb-5">
+          <img src="https://searchscale.com/"  onerror="this.src='https:\/\/searchscale.com\/images\/banner\/vector_search_with_lucene_post_image.jpg'" alt="post thumb" class="img-fluid w-100">
+           <div class="card-type">Tutorials</div>
+        </div>
+        <div class="card-meta text-uppercase mb-2">by <strong class="text-dark">Vivek Narang</strong>/ on <strong class="text-dark">09 Jan 2024</strong></div>
+        <h2>Vector Search with Lucene</h2>
+        <div class="content">
+          
+
+<h4 id="what-is-vector-search">What is vector search</h4>
+
+<p>The traditional lexical search works very well with structured data but what happens when we are dealing with unstructured data like images, video, raw text, etc? Vector search tries to address the limitations of the lexical search by providing the ability to query unstructured data. While the lexical search tries to match the literals of the words or their variants, vector search attempts to search based on the proximity of the data and query points in a multi-dimensional vector space. Semantic search uses vector search to achieve its ultimate goal - <em>to focus on the intent or the meaning of data</em>.</p>
+
+<p><img src="/images/blog/vector_search_with_lucene_diagram.jpg" alt="Vector search with Lucene diagram" /></p>
+
+<p>Semantic search is achieved with deep learning and vector search. With neural network models, the unstructured data can be represented as a sequence of floating point values known as embedding vectors. These vector representations are then indexed (using Lucene API for example). <em>Embedding vectors that are close to one another represent semantically similar pieces of data.</em></p>
+
+<p><img src="/images/blog/neural_networks_to_vector_transformation.jpg" alt="Neural network transformation to vectors" /></p>
+
+<p>Vector search finds similar data using approximate nearest neighbor (ANN) algorithms. One such algorithm is the <a href="https://www.researchgate.net/publication/301837503_Efficient_and_Robust_Approximate_Nearest_Neighbor_Search_Using_Hierarchical_Navigable_Small_World_Graphs">Hierarchical Navigable Small World Graphs (HNSW)</a> and <a href="https://lucene.apache.org/core/9_8_0/core/org/apache/lucene/util/hnsw/HnswGraphSearcher.html">Lucene has its implementation for this algorithm</a>. Query vectors that are produced using the same neural network models are then used to identify semantically similar pieces of data. Several corporations have started to leverage semantic search in solving interesting challenges and use cases like <a href="https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/">Spotify enabling users to find more relevant content using semantic search</a> etc.</p>
+
+<h4 id="a-hands-on-with-vector-search-and-lucene">A Hands-on with Vector Search and Lucene</h4>
+
+<p>For this hands-on example, we have leveraged <a href="https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip">OpenAI&rsquo;s Wikipedia embeddings dataset (25k documents)</a>. This dataset includes an embedded vector representation of the <code>title</code> and <code>content</code> fields. The query vector has been generated using <a href="https://platform.openai.com/docs/api-reference/embeddings">OpenAI&rsquo;s embeddings endpoint</a>. The vector fields in the dataset and query vector have 1536 dimensions. There are mainly three sections of the code: Setup, Indexing of data, and Querying.</p>
+
+<h5 id="setup">Setup</h5>
+
+<p>We need a place to keep the index files and for that, we used <a href="https://lucene.apache.org/core/9_8_0/core/org/apache/lucene/store/ByteBuffersDirectory.html">ByteBuffersDirectory</a> to conveniently keep the index files in the heap memory. Alternatively, if we want to store the index files in the file system we can use <a href="https://lucene.apache.org/core/9_8_0/core/org/apache/lucene/store/FSDirectory.html">FSDirectory</a>.</p>
+
+<pre><code class="language-java">Directory index = new ByteBuffersDirectory();
+</code></pre>
+
+<h5 id="addressing-lucene-s-limitation-of-a-maximum-of-1024-dimensions-for-vector-fields">Addressing Lucene&rsquo;s limitation of a maximum of 1024 dimensions for vector fields</h5>
+
+<p>While many models are less than 1024 dimensions we are using an OpenAI based model which is of 1536 dimensions. Lucene by default has a limitation of a maximum of 1024 dimensions for vector fields and there have been <a href="https://github.com/apache/lucene/issues/11507">discussions in the Lucene community</a> on increasing this limit. Since our dataset and query vector is of 1536 dimensions we had to create a workaround to make this work. Our workaround involved setting a <code>Lucene95Codec</code> codec with an overridden <code>getKnnVectorsFormatForField</code> method to enable indexing of vectors with 1536 dimensions using <code>HighDimensionKnnVectorsFormat</code>.</p>
+
+<pre><code class="language-java">Lucene95Codec knnVectorsCodec = new Lucene95Codec(Mode.BEST_SPEED) {
+  @Override
+  public KnnVectorsFormat getKnnVectorsFormatForField(String field) {
+    int maxConn = 16;
+    int beamWidth = 100;
+    KnnVectorsFormat knnFormat = new Lucene95HnswVectorsFormat(maxConn, beamWidth);
+    return new HighDimensionKnnVectorsFormat(knnFormat, 1536);
+  }
+};
+IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer()).setCodec(knnVectorsCodec);
+
+private static class HighDimensionKnnVectorsFormat extends KnnVectorsFormat {
+  private final KnnVectorsFormat knnFormat;
+  private final int maxDimensions;
+
+  public HighDimensionKnnVectorsFormat(KnnVectorsFormat knnFormat, int maxDimensions) {
+    super(knnFormat.getName());
+    this.knnFormat = knnFormat;
+    this.maxDimensions = maxDimensions;
+  }
+
+  @Override
+  public KnnVectorsWriter fieldsWriter(SegmentWriteState state) throws IOException {
+    return knnFormat.fieldsWriter(state);
+  }
+
+  @Override
+  public KnnVectorsReader fieldsReader(SegmentReadState state) throws IOException {
+    return knnFormat.fieldsReader(state);
+  }
+
+  @Override
+  public int getMaxDimensions(String fieldName) {
+    return maxDimensions;
+  }
+}
+</code></pre>
+
+<h5 id="indexing-data">Indexing data</h5>
+
+<p>All we do here is go through the documents in the <a href="https://cdn.openai.com/API/examples/data/vector_database_wikipedia_articles_embedded.zip">dataset archive</a> and add the documents to the index using an instance of the <code>IndexWriter</code>. <a href="https://lucene.apache.org/core/9_8_0/core/org/apache/lucene/document/KnnFloatVectorField.html">KnnFloatVectorField</a> is used to index <code>title_vector</code> and <code>content_vector</code> fields with <a href="https://en.wikipedia.org/wiki/Cosine_similarity">cosine as a similarity</a> function. These fields are the embedded vector representation of the actual <code>title</code> and <code>content</code> fields.</p>
+
+<pre><code class="language-java">try (ZipFile zip = new ZipFile(&quot;vector_database_wikipedia_articles_embedded.zip&quot;);
+  IndexWriter writer = new IndexWriter(index, config)) {
+  CSVReader reader = new CSVReader(new InputStreamReader(zip.getInputStream(zip.entries().nextElement())));
+  String[] line;
+  int count = 0;
+  while ((line = reader.readNext()) != null) {
+    if ((count++) == 0) continue; // skip the first line of the file, it is a header
+    Document doc = new Document();
+    doc.add(new StringField(&quot;id&quot;, line[0], Field.Store.YES));
+    doc.add(new StringField(&quot;url&quot;, line[1], Field.Store.YES));
+    doc.add(new StringField(&quot;title&quot;, line[2], Field.Store.YES));
+    doc.add(new TextField(&quot;text&quot;, line[3], Field.Store.YES));
+    float[] titleVector = ArrayUtils.toPrimitive(Arrays.stream(line[4].replace(&quot;[&quot;, &quot;&quot;).replace(&quot;]&quot;, &quot;&quot;).
+      split(&quot;, &quot;)).map(Float::valueOf).toArray(Float[]::new));
+    doc.add(new KnnFloatVectorField(&quot;title_vector&quot;, titleVector, VectorSimilarityFunction.COSINE));
+    float[] contentVector = ArrayUtils.toPrimitive(Arrays.stream(line[5].replace(&quot;[&quot;, &quot;&quot;).replace(&quot;]&quot;, &quot;&quot;).
+      split(&quot;, &quot;)).map(Float::valueOf).toArray(Float[]::new));
+    doc.add(new KnnFloatVectorField(&quot;content_vector&quot;, contentVector, VectorSimilarityFunction.COSINE));
+    doc.add(new StringField(&quot;vector_id&quot;, line[6], Field.Store.YES));
+
+    if (count % 1000 == 0) System.out.println(count + &quot; docs indexed ...&quot;);
+    writer.addDocument(doc);
+  }
+  writer.commit();
+} catch (Exception e) {
+  e.printStackTrace();
+}
+</code></pre>
+
+<h5 id="query">Query</h5>
+
+<p>Finally, we query the Lucene index. The query is <code>Is the Atlantic the biggest ocean in the world?</code>. We&rsquo;ve borrowed the step mentioned in <a href="https://cookbook.openai.com/examples/vector_databases/elasticsearch/elasticsearch-semantic-search#encode-a-question-with-openai-embedding-model">OpenAI&rsquo;s cookbook</a> to encode this query with OpenAI&rsquo;s embedding model to generate the query vector. The query vector stored in the <a href="https://github.com/SearchScale/lucene-examples/blob/main/lucene-vector-search-example/query.txt">query.txt</a> file is then used to query the <code>content_vector</code> field of the index by passing an instance of the <a href="https://lucene.apache.org/core/9_8_0/core/org/apache/lucene/search/KnnFloatVectorQuery.html">KnnFloatVectorQuery</a> to the <code>IndexSearcher</code>&rsquo;s <code>search</code> method.</p>
+
+<pre><code class="language-java">IndexReader reader = DirectoryReader.open(index);
+IndexSearcher searcher = new IndexSearcher(reader);
+
+for (String line: FileUtils.readFileToString(new File(&quot;query.txt&quot;), &quot;UTF-8&quot;).split(&quot;\n&quot;)) {
+  float queryVector[] = ArrayUtils.toPrimitive(Arrays.stream(line.replace(&quot;[&quot;, &quot;&quot;).replace(&quot;]&quot;, &quot;&quot;).
+    split(&quot;, &quot;)).map(Float::valueOf).toArray(Float[]::new));
+  Query query = new KnnFloatVectorQuery(&quot;content_vector&quot;, queryVector, 1);
+  TopDocs topDocs = searcher.search(query, 100);
+  ScoreDoc[] hits = topDocs.scoreDocs;
+
+  System.out.println(&quot;Found &quot; + hits.length + &quot; hits.&quot;);
+  for (ScoreDoc hit: hits) {
+    Document d = searcher.storedFields().document(hit.doc);
+    System.out.println(d.get(&quot;title&quot;));            
+    System.out.println(d.get(&quot;text&quot;));
+    System.out.println(&quot;Score: &quot; + hit.score);
+    System.out.println(&quot;-----&quot;);
+  }
+}
+</code></pre>
+
+<h5 id="output">Output</h5>
+
+<p>Below is what the output looks like.</p>
+
+<pre><code class="language-shell">Starting indexing of data ...
+1000 docs indexed ...
+2000 docs indexed ...
+3000 docs indexed ...
+4000 docs indexed ...
+5000 docs indexed ...
+6000 docs indexed ...
+7000 docs indexed ...
+8000 docs indexed ...
+9000 docs indexed ...
+10000 docs indexed ...
+11000 docs indexed ...
+12000 docs indexed ...
+13000 docs indexed ...
+14000 docs indexed ...
+15000 docs indexed ...
+16000 docs indexed ...
+17000 docs indexed ...
+18000 docs indexed ...
+19000 docs indexed ...
+20000 docs indexed ...
+21000 docs indexed ...
+22000 docs indexed ...
+23000 docs indexed ...
+24000 docs indexed ...
+25000 docs indexed ...
+Running queries ...
+Found 1 hits.
+Atlantic Ocean
+The Atlantic Ocean is the world's second largest ocean.  It covers a total area of about . It covers about 20 percent of the Earth's surface. It is named after the god Atlas from Greek mythology.
+
+Geologic history 
+The Atlantic formed when the Americas moved west from Eurasia and Africa. This began sometime in the Cretaceous period, roughly 135 million years ago. It was part of the break-up of the supercontinent Pangaea.
+
+The east coast of South America is shaped somewhat like the west coast of Africa, and this gave a clue that continents moved over long periods of time (continental drift). The Atlantic Ocean is still growing now, because of sea-floor spreading from the mid-Atlantic Ridge, while the Pacific Ocean is said to be shrinking because the sea floor is folding under itself or subducting into the mantle.
+
+Geography
+The Atlantic Ocean is bounded on the west by North and South America. It connects to the Arctic Ocean through the Denmark Strait, Greenland Sea, Norwegian Sea and Barents Sea. It connects with the Mediterranean Sea through the Strait of Gibraltar.
+
+In the southeast, the Atlantic merges into the Indian Ocean. The 20° East meridian defines its border.
+
+In the southwest, the Drake Passage connects it to the Pacific Ocean. The Panama Canal links the Atlantic and Pacific.
+
+The Atlantic Ocean is second in size to the Pacific. It occupies an area of about . The volume of the Atlantic, along with its adjacent seas (the seas next to it), is 354,700,000 cubic kilometres.
+
+The average depth of the Atlantic, along with its adjacent seas, is . The greatest depth is Milwaukee Deep near Puerto Rico, where the Ocean is  deep.
+
+Gulf Stream 
+The Atlantic Ocean has important ocean currents.  One of these, called the Gulf Stream, flows across the North Atlantic.  Water gets heated by the sun in the Caribbean Sea and then moves northwest toward the North Pole.  This makes France, the British Isles, Iceland, and Norway in Europe much warmer in winter than Newfoundland and Nova Scotia in Canada. Without the Gulf Stream, the climates of northeast Canada and northwest Europe might be the same, because these places are about the same distance from the North Pole.
+
+There are currents in the South Atlantic too, but the shape of this sea means that it has less effect on South Africa.
+
+Geology 
+The main feature of the Atlantic Ocean's seabed is a large underwater mountain chain called the Mid-Atlantic Ridge.  It runs from north to south under the Ocean. This is at the boundary of four tectonic plates: Eurasian, North American, South American and African. The ridge extends from Iceland in the north to about 58° south.
+
+The salinity of the surface waters of the open ocean ranges from 3337 parts per thousand and varies with latitude and season.
+
+References
+
+Other websites 
+LA Times special Altered Oceans 
+Oceanography Image of the Day, from the Woods Hole Oceanographic Institution
+National Oceanic and Atmospheric Administration 
+NOAA In-situ Ocean Data Viewer  Plot and download ocean observations
+
+www.cartage.org.lb 
+www.mnsu.edu
+Score: 0.9364375
+-----
+</code></pre>
+
+<h5 id="try-it-out-yourself">Try it out yourself!</h5>
+
+<p>For your convenience, we have put <a href="https://github.com/SearchScale/lucene-examples/tree/main/lucene-vector-search-example">an end-to-end working example of the above</a> out on GitHub for you to explore and play with. We&rsquo;d love to hear from you!</p>
+
+<h5 id="whats-next">Whats next</h5>
+
+<p>As a part of this series of blog posts, some of the next posts will cover our work in <a href="https://github.com/apache/lucene/issues/13003">speeding up vector search in Lucene with GPUs</a>.</p>
+
+        </div>
+        <!-- tags -->
+        <div class="mb-3">
+          <h5 class="d-inline-block mr-3">Tags:</h5>
+          <ul class="list-inline d-inline-block">
+            
+            <li class="list-inline-item"><a class="text-color" href="https://searchscale.com/tags/lucene">Lucene</a>,</li>
+            
+            <li class="list-inline-item"><a class="text-color" href="https://searchscale.com/tags/vector%20search">Vector Search</a>,</li>
+            
+            <li class="list-inline-item"><a class="text-color" href="https://searchscale.com/tags/llm">LLM</a>,</li>
+            
+            <li class="list-inline-item"><a class="text-color" href="https://searchscale.com/tags/knn">KNN</a>,</li>
+            
+            <li class="list-inline-item"><a class="text-color" href="https://searchscale.com/tags/openai">OpenAI</a>,</li>
+            
+          </ul>
+        </div>
+        
+        
+        <div class="mt-5">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "searchstack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+<aside class="col-lg-4 order-1 order-lg-2">
+  <!-- latest post -->
+  <div class="bg-white px-4 py-5 box-shadow mb-5">
+    <h4 class="mb-4">Latest Article</h4>
+    <!-- post-item -->
+    
+    <div class="media border-bottom border-color pb-3 mb-3">
+      <a href="https://searchscale.com/blog/vector-search-with-lucene/"><img class="mr-3 post-thumb-sm" src="https://searchscale.com/images/banner/vector_search_with_lucene_post_image.jpg"></a>
+      <div class="media-body">
+        <a href="https://searchscale.com/blog/vector-search-with-lucene/">
+          <h5 class="mt-0">Vector Search with Lucene</h5>
+        </a>
+        09 Jan 2024
+      </div>
+    </div>
+    
+    <div class="media border-bottom border-color pb-3 mb-3">
+      <a href="https://searchscale.com/blog/prs/"><img class="mr-3 post-thumb-sm" src="https://searchscale.com/images/blog/prs-design.png"></a>
+      <div class="media-body">
+        <a href="https://searchscale.com/blog/prs/">
+          <h5 class="mt-0">Per Replica States: Improving SolrCloud stability &amp; reliability</h5>
+        </a>
+        24 Feb 2021
+      </div>
+    </div>
+    
+    <div class="media border-bottom border-color pb-3 mb-3">
+      <a href="https://searchscale.com/blog/solr-bench/"><img class="mr-3 post-thumb-sm" src="https://searchscale.com/images/blog/benchmarking.jpg"></a>
+      <div class="media-body">
+        <a href="https://searchscale.com/blog/solr-bench/">
+          <h5 class="mt-0">Solr Bench: Performance Benchmarking Suite</h5>
+        </a>
+        20 Jun 2020
+      </div>
+    </div>
+    
+  </div>
+  <!-- categories -->
+  <div class="bg-white px-4 py-5 box-shadow mb-5">
+    <h4 class="mb-4">Category</h4>
+    <ul class="list-styled style-circle">
+      <li class="border-bottom border-color"><a href="/categories/features" class="text-color d-block pb-3 mt-3 text-decoration-none">Features</a></li>
+      <li class="border-bottom border-color"><a href="/categories/solrcloud" class="text-color d-block pb-3 mt-3 text-decoration-none">Solrcloud</a></li>
+      <li class="border-bottom border-color"><a href="/categories/tools" class="text-color d-block pb-3 mt-3 text-decoration-none">Tools</a></li>
+      <li class="border-bottom border-color"><a href="/categories/tutorials" class="text-color d-block pb-3 mt-3 text-decoration-none">Tutorials</a></li>
+      <li class="border-bottom border-color"><a href="/categories/usecases" class="text-color d-block pb-3 mt-3 text-decoration-none">Usecases</a></li>
+    </ul>
+  </div>
+  <!-- tags -->
+  <div class="bg-white px-4 py-5 box-shadow mb-5">
+    <h4 class="mb-4">Tags</h4>
+    <ul class="list-inline tag-list">
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/advanced">Advanced</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/beginner">Beginner</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/intermediate">Intermediate</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/knn">Knn</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/llm">Llm</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/lucene">Lucene</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/openai">Openai</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/payloads">Payloads</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/performance">Performance</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/solrcloud">Solrcloud</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/tutorial">Tutorial</a></li>
+      <li class="list-inline-item"><a class="hover-ripple" href="/tags/vector-search">Vector search</a></li>
+    </ul>
+  </div>
+</aside>
+<!-- /sidebar -->
+    </div>
+  </div>
+</section>
+<!-- /blog details -->
+
+
+<footer>
+  
+  <div class="section bg-secondary">
+    <div class="container">
+      <div class="row justify-content-between">
+        
+        <div class="col-lg-5 mb-5 mb-lg-0">
+          
+          <a class="mb-4 d-inline-block" href="/"><img class="img-fluid"
+              src="https://searchscale.com/images/logo-light-small.png" alt="SearchScale"></a>
+          <p class="text-light mb-5">SearchScale is an organization offering services for users of Apache Solr. We offer auditing, consulting, solutions implementation and custom development services.</p>
+          <h4 class="text-white mb-4">FOLLOW US ON</h4>
+          
+          <ul class="list-inline social-icon-alt">
+            
+            <li class="list-inline-item">
+              <a class="hover-ripple" href="https://twitter.com/SearchScale"><i class="fa fa-twitter"></i></a>
+            </li>
+            
+            <li class="list-inline-item">
+              <a class="hover-ripple" href="https://github.com/searchscale"><i class="fa fa-github"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <div class="row">
+            
+            <div class="col-6 mb-5">
+              <h4 class="text-white mb-4">Services</h4>
+              <ul class="list-styled">
+                
+                
+                <li class="mb-3 text-light">Infrastructure Auditing
+                </li>
+                
+                
+                <li class="mb-3 text-light">Performance Optimization
+                </li>
+                
+                
+                <li class="mb-3 text-light">Solr Consulting
+                </li>
+                
+                
+                <li class="mb-3 text-light">Training and Knowledge Support
+                </li>
+                
+              </ul>
+            </div>
+            
+            <div class="col-6 mb-5">
+              <h4 class="text-white mb-4">Contact Info</h4>
+              <ul class="list-unstyled">
+                <li class="text-light mb-3"></li>
+                <li class="text-light mb-3">info@searchscale.com</li>
+                <li class="text-light mb-3"></li>
+              </ul>
+            </div>
+            
+            
+            <div class="col-12">
+              <h4 class="text-white mb-4">Subscribe Newsletter</h4>
+              <form action="https://searchstack.us10.list-manage.com/subscribe/post?u=fcfeb43a96919d595097060e2&amp;amp;id=6b95f609a6" method="post" name="mc-embedded-subscribe-form" target="_blank">
+                <div class="position-relative">
+                  <button type="submit" name="subscribe" class="btn btn-primary btn-subscribe">Subscribe</button>
+                  <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="mc-embedded-subscribe-form" tabindex="-1">
+                  </div>
+                </div>
+              </form>
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bg-secondary-darken py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
+          <p class="mb-0 text-white">Copyright &copy; 2020 SearchScale</p>
+        </div>
+        <div class="col-md-6 text-center text-md-right">
+          <ul class="list-inline">
+            
+            <li class="list-inline-item mx-0"></li>
+            
+            <li class="list-inline-item mx-0"></li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<!-- Google Map API -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://searchscale.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://searchscale.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://searchscale.com/plugins/slick/slick.min.js"></script>
+
+<script src="https://searchscale.com/plugins/google-map/gmap.js"></script>
+
+<script src="https://searchscale.com/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://searchscale.com/plugins/filterizr/jquery.filterizr.min.js"></script>
+
+<script src="https://searchscale.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://searchscale.com/plugins/search/mark.js"></script>
+
+<script src="https://searchscale.com/plugins/search/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://searchscale.com/js/script.min.js"></script>
+
+<!-- google analitycs -->
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', '170228589', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>

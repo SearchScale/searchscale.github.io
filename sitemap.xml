@@ -4,7 +4,57 @@
   
   <url>
     <loc>https://searchscale.com/categories/</loc>
-    <lastmod>2021-02-24T10:00:00+05:30</lastmod>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/knn/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/llm/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/lucene/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/openai/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/blog/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/categories/tutorials/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/tags/vector-search/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://searchscale.com/blog/vector-search-with-lucene/</loc>
+    <lastmod>2024-01-09T19:20:49+05:30</lastmod>
   </url>
   
   <url>
@@ -18,27 +68,12 @@
   </url>
   
   <url>
-    <loc>https://searchscale.com/</loc>
-    <lastmod>2021-02-24T10:00:00+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://searchscale.com/blog/</loc>
-    <lastmod>2021-02-24T10:00:00+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://searchscale.com/categories/solrcloud/</loc>
-    <lastmod>2021-02-24T10:00:00+05:30</lastmod>
-  </url>
-  
-  <url>
     <loc>https://searchscale.com/tags/solrcloud/</loc>
     <lastmod>2021-02-24T10:00:00+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://searchscale.com/tags/</loc>
+    <loc>https://searchscale.com/categories/solrcloud/</loc>
     <lastmod>2021-02-24T10:00:00+05:30</lastmod>
   </url>
   
@@ -74,11 +109,6 @@
   
   <url>
     <loc>https://searchscale.com/tags/tutorial/</loc>
-    <lastmod>2017-12-02T19:20:49+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://searchscale.com/categories/tutorials/</loc>
     <lastmod>2017-12-02T19:20:49+05:30</lastmod>
   </url>
   
