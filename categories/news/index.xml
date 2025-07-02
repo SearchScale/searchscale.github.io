@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>News on SearchScale</title>
+    <link>https://searchscale.com/categories/news/</link>
+    <description>Recent content in News on SearchScale</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright &amp;copy; 2020 SearchScale</copyright>
+    <lastBuildDate>Wed, 02 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://searchscale.com/categories/news/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building the foundations: Apache Lucene Accelerated with the NVIDIA cuVS 25.06 Release</title>
+      <link>https://searchscale.com/blog/apache-lucene-accelerated-with-nvidia-cuvs-25.06-release/</link>
+      <pubDate>Wed, 02 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://searchscale.com/blog/apache-lucene-accelerated-with-nvidia-cuvs-25.06-release/</guid>
+      <description>GPU-accelerated Lucene Apache Lucene is a fast search engine with capabilities ranging from traditional TF-IDF and BM25-based search to intelligent semantic search.</description>
+    </item>
+  </channel>
+</rss>
